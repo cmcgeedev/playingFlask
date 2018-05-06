@@ -1,3 +1,5 @@
+from users import user
+
 class Shelter:
     __location = (0,0)
     __id = ''
