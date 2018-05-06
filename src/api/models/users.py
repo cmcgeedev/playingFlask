@@ -1,3 +1,4 @@
+
 class User:
 
     __is_admin = False

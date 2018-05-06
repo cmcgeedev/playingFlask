@@ -1,28 +1,29 @@
 import SQLAlchemy
-
-class dbCore:
-    def __init__(self):
-        pass
-
-    def getFromTable(self, table, query):
-        pass
-
-    def updateInTable(self, table, ids, payload):
-        pass
-
-    def deleteFromTable(self, table, ids):
-        pass
-
-    def addToTable(self, table, query):
-        pass
-
-
 import psycopg2
 import psycopg2.extras
 from credentials import DBHOST, DBNAME, DBPASS, DBUSER
+from playingFlask.src.api.models.users import User
+
+class dbCore:
+    def __init__(self):
+        self._postgres_connector = PostgresInterface()
+
+    def get_from_table(self, table, query):
+        pass
+
+    def update_in_table(self, table, ids, payload):
+        pass
+
+    def delete_from_table(self, table, ids):
+        pass
+
+    def add_to_table(self, table, query):
+        pass
 
 
 class PostgresInterface():
+    __user_info = User()
+
     def __init__(self):
         self.pet_pals_db_connection = psycopg2.connect("dbname='"+DBNAME+"' user='"+DBUSER+"' host='"+DBHOST+"' password='"+
                                            DBPASS+"'")
@@ -30,15 +31,18 @@ class PostgresInterface():
 
         self.user_info_sql = "SELECT * FROM user WHERE Id = (%s)" #"SELECT * FROM list where owner_zuid = %s"
 
-        self.shelter_info_sql = ""
-        self.pet_info_sql = ""
+    def init_user_info(self, user_id):
+        pass
 
-    def select_user_lists(self,user_id):
+    def select_from_table(self, query):
+        self.pet_pals_cursor.execute(query)
+
+    def select_user(self,user_id):
         print self.pet_pals_cursor.mogrify(self.user_info_sql,(user_id,))
         self.pet_pals_cursor.execute(self.user_info_sql,(user_id,))
-        lists_data = self.pet_pals_cursor.fetchall()
+        user_data = self.pet_pals_cursor.fetchall()
 
-        return lists_data
+        return user_data
 
     def select_pets_by_breed(self, breed_info):
         self.pet_pals_cursor.execute("")
@@ -76,12 +80,4 @@ class PostgresInterface():
             print dict(row)
         print rows
 
-
-
-if __name__ == "__main__":
-    srt = PostgresInterface()
-    srt.get_table_description('pets')
-    srt.get_table_description('shelters')
-    srt.get_table_description('users')
-    print srt.get_table_data("pets")
 
