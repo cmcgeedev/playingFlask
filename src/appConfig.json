@@ -1,0 +1,5 @@
+{
+    "Env": "local",
+    "Port": 5000,
+    "Debug": true
+}
