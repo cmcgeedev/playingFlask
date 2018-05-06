@@ -3,17 +3,17 @@ class ShelterServices:
     def __init__(self):
         pass
 
-    def getSheltersByLocation(self):
+    def get_shelters_by_location(self):
         pass
 
-    def getShelterById(self):
+    def get_shelter_by_id(self):
         pass
 
-    def updateShelter(self):
+    def update_shelter(self):
         pass
 
-    def deleteShelter(self):
+    def delete_shelter(self):
         pass
 
-    def addShelter(self):
+    def add_shelter(self):
         pass
