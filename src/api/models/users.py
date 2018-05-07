@@ -8,8 +8,10 @@ class User:
     def __init__(self, payload):
 
         try:
-            assert validate_required_fields(self.__required_fields, payload)
-        except AssertionError:
+            field_check = validate_required_fields(self.__required_fields, payload)
+            if not field_check:
+                raise AttributeError
+        except AttributeError:
             print 'Missing required fields'
 
         self.access_level = payload['access_level']
