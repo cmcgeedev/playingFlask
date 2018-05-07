@@ -32,11 +32,19 @@ export function userLogin(formData) {
 }
 
 export function getUserDetails(user_id) {
-  return fetch(`${host}/v1/user/user_id)
+  return fetch(`${host}/v1/users/user_id`)
     .then(response => {
       if (response.ok) return response.json();
       else return Promise.reject(new Error('Could not fetch user details'));
     });
+}
+
+export function getPetDetials(pet_id) {
+    return fetch(`${host}/v1/pets/pet_id`)
+        .then(response => {
+            if(response.ok) return response.json();
+            else return Promise.rejection(new Error('Could not fetch pet details'));
+        });
 }
 
 /*
