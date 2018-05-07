@@ -1,8 +1,9 @@
 import SQLAlchemy
 from core import dbCore
+from playingFlask.src.api.services.baseService import BaseService
 
 
-class PetServices:
+class PetServices(BaseService):
 
     __db_response = {}
 
@@ -19,7 +20,10 @@ class PetServices:
         self.__db_response = db_response_val
 
     def __init__(self):
-        self._db_connection = dbCore()
+        self._db_connection = self.initialize_db_connection()
+
+    def initialize_db_connection(self):
+        return dbCore()
 
     def create_pet(self, pet_info):
         table = 'pets'
