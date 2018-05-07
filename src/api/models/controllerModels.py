@@ -8,8 +8,7 @@ class PetControllerSearch:
 
     def __init__(self, payload):
         try:
-            field_check = validate_required_fields(self.__required_fields, payload)
-            assert field_check
+            assert validate_required_fields(self.__required_fields, payload)
         except AssertionError:
             print 'field check failed'
             return
@@ -23,3 +22,18 @@ class PetControllerSearch:
         self.__max_distance = payload['max_distance']
         self.__breed = payload['breed']
         self.__species = payload['species']
+
+
+class ShelterControllerSearch:
+
+    __required_fields = ['longitude', 'latitude']
+
+    def __init__(self, payload):
+        try:
+            assert validate_required_fields(self.__required_fields, payload)
+        except AssertionError:
+            print 'field check failed'
+            return
+
+
+

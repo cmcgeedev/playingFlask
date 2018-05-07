@@ -2,7 +2,7 @@ from playingFlask.src.api.common.Utilities import validate_required_fields
 
 
 class Shelter:
-    __required_fields = ['longitude', 'latitude', 'id', 'capacity']
+    __required_fields = ['city', 'id', 'capacity']
 
     def __init__(self, payload):
         try:
@@ -11,7 +11,9 @@ class Shelter:
             print 'Missing Required Fields For Shelter - exiting'
             return
 
-        self.longitude = payload['longitude']
-        self.latitude = payload['latitude']
+        #self.longitude = payload['longitude'] -- not messing with geolocation for now
+        #self.latitude = payload['latitude']
+
+        self.city = payload['city']
         self.id = payload['id']
         self.capacity = payload['capacity']

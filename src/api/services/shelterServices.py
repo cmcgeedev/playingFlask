@@ -1,5 +1,6 @@
-from core import dbCore
+from core import DbCore
 from baseService import BaseService
+import DbCommands as commands
 
 
 class ShelterServices(BaseService):
@@ -22,13 +23,21 @@ class ShelterServices(BaseService):
         self._db_connection = self.initialize_db_connection()
 
     def initialize_db_connection(self):
-        return dbCore()
+        return DbCore()
 
-    def get_shelters_by_location(self, longitude, latitude):
-        pass
+    def get_shelters_by_city(self, city):
+        query = commands.GET_SHELTERS_BY_CITY
+        query_values = city,
+        response = self._db_connection.get_from_table(query, query_values)
 
-    def get_shelter_by_id(self):
-        pass
+        return response
+
+    def get_shelter_by_id(self, id):
+        query = commands.GET_SHELTER_WITH_ID
+        query_values = id,
+        response = self._db_connection.get_from_table(query, query_values)
+
+        return response
 
     def update_shelter(self):
         pass
