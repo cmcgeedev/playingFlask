@@ -25,12 +25,11 @@ def init_logging(cfg):
 
 def serve_api():
     cfg = AppConfig.get_config()
+    #just for testing - will remove
     api.add_resource(UserController.HelloWorld, '/v1/hello')
     api.add_resource(UserController.UserController, '/v1/user/<string:user_id>')
     api.add_resource(PetController.PetController, '/v1/pets/<string:pet_id>')
-    api.add_resource(PetController.PetSearchController, '/v1/findPets')
-    api.add_resource(ShelterController.ShelterController,'/v1/shelters/<integer:longitude>,<integer:latitude>/'
-                                                         '<integer:radius>')
+    api.add_resource(ShelterController.ShelterController,'/v1/shelters/<string:shelter_id>')
     app.run(host="0.0.0.0", port=cfg.Port, debug=cfg.Debug)
     return
 
