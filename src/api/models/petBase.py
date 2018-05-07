@@ -8,6 +8,10 @@ class petBase(object):
     """
 
     @abc.abstractproperty
+    def is_active(self):
+        return
+
+    @abc.abstractproperty
     def id(self):
         return
 
@@ -29,6 +33,10 @@ class petBase(object):
 
     @abc.abstractproperty
     def species(self):
+        return
+
+    @abc.abstractproperty
+    def breed(self):
         return
     """
     Getters

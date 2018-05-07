@@ -1,33 +1,20 @@
+from playingFlask.src.api.common.Utilities import validate_required_fields
+
 
 class User:
 
-    __is_admin = False
-    __id = ''
-    __session_id = ''
-    __password = ''
-    __username = ''
+    __required_fields = ['access_level', 'id', 'session_id', 'password', 'username']
 
-    def __init__(self):
-        pass
+    def __init__(self, payload):
 
-    @property
-    def is_admin(self):
-        return self.__is_admin
+        try:
+            assert validate_required_fields(self.__required_fields, payload)
+        except AssertionError:
+            print 'Missing required fields'
 
-    @property
-    def id(self):
-        return self.__id
-
-    @property
-    def session_id(self):
-        return self.__session_id
-
-    @property
-    def password(self):
-        return self.__password
-
-    @property
-    def username(self):
-        return self.__username
-
+        self.access_level = payload['access_level']
+        self.id = payload['id']
+        self.session_id = payload['session_id']
+        self.password = payload['password']
+        self.username = payload['username']
 
