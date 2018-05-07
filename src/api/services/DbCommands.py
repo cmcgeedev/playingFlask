@@ -8,14 +8,13 @@ DEACTIVATE_USER = "UPDATE Users SET (is_active) = (False) WHERE Id = %s"
 
 GET_PET_DETAILS = "SELECT Age, Height, Weight, Breed, Species FROM Pets WHERE Id = %s"
 PET_SEARCH_BASIS = "SELECT Age, Height, Weight, Breed, Species FROM Pets WHERE is_active = TRUE AND "
+INSERT_PET = "INSERT INTO Pets (Age, Height, Weight, Breed, Species, Shelter_id) VALUES (%s, %s, %s, %s, %s, %s)"
+UPDATE_PET = "UPDATE Pets SET (Age, Height, Weight, Breed, Species, Shelter_id) = (%s, %s, %s, %s, %s, %s) WHERE Id = %s"
+ACTIVATE_PET = "UPDATE Pets SET (Is_Active) = (True) WHERE Id = %s"
+DEACTIVATE_PET = "UPDATE Pets SET (Is_Active) = (False) WHERE Id = %s"
 
-GET_SHELTER_WITH_ID = "SELECT Id FROM Shelters WHERE Id = %s"
-GET_SHELTERS_BY_CITY = "SELECT Id FROM Shelters WHERE City = %s"
-
-
-"""
-        self.pet_pals_cursor.execute("INSERT INTO shelters (name,is_active,longitude,latitude, city, "
-                                      "zip,created_by,updated_by) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
-                                      shelter_data)
-
-"""
+GET_SHELTER_WITH_ID = "SELECT Id, City, Capacity FROM Shelters WHERE Id = %s"
+GET_SHELTERS_BY_CITY = "SELECT Id, City, Capacity FROM Shelters WHERE City = %s"
+UPDATE_SHELTER = "UPDATE Shelters (City, Capacity) = (%s, %s)"
+ACTIVATE_SHELTER = "UPDATE Shelters SET (Is_Active) = (True) WHERE Id = %s"
+DEACTIVATE_SHELTER = "UPDATE Shelters SET (Is_Active) = (False) WHERE Id = %s"
