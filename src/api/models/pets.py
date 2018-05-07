@@ -8,8 +8,9 @@ class pet:
     def __init__(self, payload):
         try:
             field_check = validate_required_fields(self.__required_fields, payload)
-            assert field_check
-        except AssertionError:
+            if not field_check:
+                raise AttributeError
+        except AttributeError:
             print 'Required Field Mismatch'
             return
         self.id = payload['id']
