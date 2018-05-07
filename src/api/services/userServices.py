@@ -1,5 +1,6 @@
-from core import dbCore
+from core import DbCore
 from baseService import BaseService
+import DbCommands as commands
 
 
 class UserServices(BaseService):
@@ -20,24 +21,47 @@ class UserServices(BaseService):
 
     def __init__(self):
         self.__db_connection = self.initialize_db_connection()
+        self.authenticate_user = False
 
     def initialize_db_connection(self):
-        return dbCore()
+        return DbCore()
 
-    def login(self):
-        pass
+    def login(self, login_request):
+        self.db_response = self.__db_connection.get_user(login_request.id)
+        self.authenticate_user = self.__validate_user_credentials(login_request, self.db_response)
+
+    def __validate_user_credentials(self, login_request, user_object):
+        try:
+            password_match = login_request.password == user_object.password
+            username_match = login_request.username == user_object.username
+            return password_match and username_match
+        except:
+            print 'problem authenticating user'
+            return False
 
     def get_user_info(self, user_id):
-        pass
+        query = commands.GET_USER_WITH_ID
+        query_values = user_id,
+        response = self.__db_connection.get_from_table(query, query_values)
+        return response
 
-    def update_user_info(self, user_info):
-        pass
+    def update_user_field(self, user_input):
+        if user_input['field'] != 'is_active':
+            update_command = commands.UPDATE_USER_FIELD
+            update_values = user_input['field'], user_input['value'], user_input['id']
+            self.db_response = self.__db_connection.update_in_table(update_command, update_values)
+        else:
+            self.db_response = {"Error": 'Must Use User Activation Methods' }
 
     def deactivate_user(self, user_id):
-        pass
+        update_command = commands.DEACTIVATE_USER
+        update_values = user_id,
+        self.db_response = self.__db_connection.update_in_table(update_command, update_values)
 
     def activate_user(self, user_id):
-        pass
+        update_command = commands.ACTIVATE_USER
+        update_values = user_id,
+        self.db_response = self.__db_connection.update_in_table(update_command, update_values)
 
     def add_user(self, user_info):
         pass

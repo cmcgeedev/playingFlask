@@ -1,70 +1,64 @@
-import SQLAlchemy
 import psycopg2
 import psycopg2.extras
 from credentials import DBHOST, DBNAME, DBPASS, DBUSER
-from playingFlask.src.api.models.users import User
 
-class dbCore:
+
+class DbCore:
     def __init__(self):
-        self._postgres_connector = PostgresInterface()
+        self._postgres_connector = PostgresFacade()
 
-    def get_from_table(self, table, query):
-        pass
+    def get_from_table(self, query, query_values):
+        response = self._postgres_connector.select_from_table(query, query_values)
 
-    def update_in_table(self, table, ids, payload):
-        pass
+        return response
 
-    def delete_from_table(self, table, ids):
-        pass
+    def update_in_table(self, update_command, update_values):
+        response = self._postgres_connector.update_record(update_command, update_values)
 
-    def add_to_table(self, table, query):
-        pass
+        return response
+
+    def delete_from_table(self, delete_command, delete_values):
+        response = self._postgres_connector.update_record(delete_command, delete_values)
+
+        return response
+
+    def insert_in_table(self, insert_command, insert_values):
+        response = self._postgres_connector.insert_record(insert_command, insert_values)
+
+        return response
 
 
-class PostgresInterface():
-    __user_info = User()
+class PostgresFacade():
 
     def __init__(self):
         self.pet_pals_db_connection = psycopg2.connect("dbname='"+DBNAME+"' user='"+DBUSER+"' host='"+DBHOST+"' password='"+
                                            DBPASS+"'")
         self.pet_pals_cursor = self.pet_pals_db_connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
-        self.user_info_sql = "SELECT * FROM user WHERE Id = (%s)" #"SELECT * FROM list where owner_zuid = %s"
+    def select_from_table(self, query, query_values):
+        self.pet_pals_cursor.execute(query, query_values)
+        response = self.pet_pals_cursor.fetchall()
+        return response
 
-    def init_user_info(self, user_id):
-        pass
-
-    def select_from_table(self, query):
-        self.pet_pals_cursor.execute(query)
-
-    def select_user(self,user_id):
-        print self.pet_pals_cursor.mogrify(self.user_info_sql,(user_id,))
-        self.pet_pals_cursor.execute(self.user_info_sql,(user_id,))
-        user_data = self.pet_pals_cursor.fetchall()
-
-        return user_data
-
-    def select_pets_by_breed(self, breed_info):
-        self.pet_pals_cursor.execute("")
-
-    def insert_shelter(self,shelter_data):
-        self.pet_pals_cursor.execute("INSERT INTO shelters (name,is_active,longitude,latitude, city, "
-                                      "zip,created_by,updated_by) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
-                                      shelter_data)
-
-        self.pet_pals_cursor.execute('SELECT LASTVAL()')
-        lastid = self.pet_pals_cursor.fetchone()['lastval']
+    def insert_record(self, insert_command, insert_values):
+        self.pet_pals_cursor.execute(insert_command, insert_values)
+        rows_inserted = self.pet_pals_cursor.rowcount
         self.pet_pals_cursor.execute('COMMIT')
-        print lastid
-        return lastid
 
-    def insert_pet(self,criteria_data):
-        self.pet_pals_cursor.execute("INSERT INTO pets (shelter_id,breed,species,"
-                                      "age,height,weight)",criteria_data)
-        self.pet_pals_cursor.execute('SELECT LASTVAL()')
-        lastid = self.pet_pals_cursor.fetchone()['lastval']
-        self.pet_pals_cursor.execute("COMMIT")
-        return lastid
+        return rows_inserted
+
+    def update_record(self, update_command, update_values):
+        self.pet_pals_cursor.execute(update_command, update_values)
+        rows_updated = self.pet_pals_cursor.rowcount
+        self.pet_pals_cursor.execute('COMMIT')
+
+        return rows_updated
+
+    #probably don't want this here, but adding anyway
+    def delete_record(self, delete_command, delete_values):
+        self.pet_pals_cursor.execute(delete_command, delete_values)
+        rows_deleted = self.pet_pals_cursor.rowcount
+        return rows_deleted
 
     #to be removed - just for reminding me of the data structure
     def get_table_description(self,table_name):
