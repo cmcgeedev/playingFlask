@@ -28,22 +28,34 @@ class ShelterServices(BaseService):
     def get_shelters_by_city(self, city):
         query = commands.GET_SHELTERS_BY_CITY
         query_values = city,
-        response = self._db_connection.get_from_table(query, query_values)
-
-        return response
+        self.db_response = self._db_connection.get_from_table(query, query_values)
 
     def get_shelter_by_id(self, id):
         query = commands.GET_SHELTER_WITH_ID
         query_values = id,
-        response = self._db_connection.get_from_table(query, query_values)
+        self.db_response = self._db_connection.get_from_table(query, query_values)
 
-        return response
 
-    def update_shelter(self):
-        pass
+    def update_shelter(self, shelter_info):
+        update_command = commands.UPDATE_SHELTER
+        update_values = shelter_info['City'], shelter_info['Is_Active'], shelter_info['Address'], \
+            shelter_info['Name'], shelter_info['Capacity']
 
-    def delete_shelter(self):
-        pass
+        self.db_response = self._db_connection.update_in_table(update_command, update_values)
 
-    def add_shelter(self):
-        pass
+    def deactivate_shelter(self, shelter_id):
+        update_command = commands.ACTIVATE_SHELTER
+        update_values = shelter_id,
+        self.db_response = self._db_connection.update_in_table(update_command, update_values)
+
+    def activate_shelter(self, shelter_id):
+        update_command = commands.DEACTIVATE_SHELTER
+        update_values = shelter_id,
+        self.db_response = self._db_connection.update_in_table(update_command, update_values)
+
+    def insert_shelter(self, shelter_info):
+        insert_command = commands.INSERT_PET
+        insert_values = shelter_info['City'], shelter_info['Is_Active'], shelter_info['Address'], \
+            shelter_info['Name'], shelter_info['Capacity']
+
+        self.db_response = self._db_connection.update_in_table(insert_command, insert_values)

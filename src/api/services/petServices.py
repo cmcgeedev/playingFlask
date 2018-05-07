@@ -1,7 +1,6 @@
-import SQLAlchemy
-from core import dbCore
+from core import DbCore
 from playingFlask.src.api.services.baseService import BaseService
-
+import DbCommands as commands
 
 class PetServices(BaseService):
 
@@ -23,26 +22,42 @@ class PetServices(BaseService):
         self._db_connection = self.initialize_db_connection()
 
     def initialize_db_connection(self):
-        return dbCore()
+        return DbCore()
 
-    def create_pet(self, pet_info):
-        table = 'pets'
-        query = '' #build from pet_info
-        self.db_response = self._db_connection.add_to_table(table, query)
+    def insert_pet(self, pet_info):
+        insert_command = commands.INSERT_PET
+        insert_values = pet_info['Age'], pet_info['Height'], pet_info['Weight'], pet_info['Breed'], \
+            pet_info['species'], pet_info['shelter_id']
+        self.db_response = self._db_connection.update_in_table(insert_command, insert_values)
 
     def update_pet(self, pet_info):
-        table = 'pets'
-        ids = '' #grab from pet_info
-        query = '' #build from pet_info
-        self.db_response = self._db_connection.update_in_table(table, ids, query)
+        update_command = commands.UPDATE_PET
+        update_values = pet_info['Age'], pet_info['Height'], pet_info['Weight'], pet_info['Breed'], \
+            pet_info['species'], pet_info['shelter_id']
+        self.db_response = self._db_connection.update_in_table(update_command, update_values)
 
     def get_pet(self, pet_id):
-        table = 'pets'
-        query = 'SELECT * FROM pets WHERE Id='+pet_id
-        self.db_response = self._db_connection.get_from_table(table, query)
+        query = commands.GET_PET_DETAILS
+        query_values = pet_id,
+        self.db_response = self._db_connection.get_from_table(query, query_values)
 
-    def get_pets_with_search_criteria(self, search_criteria):
-        table = 'pets'
-        query = '' #build query from search criteria
-        self.db_response = self._db_connection.get_from_table(table, query)
+    def deactivate_pet(self, pet_id):
+        update_command = commands.DEACTIVATE_PET
+        update_values = pet_id,
+        self.db_response = self._db_connection.update_in_table(update_command, update_values)
+
+    def activate_pet(self, pet_id):
+        update_command = commands.ACTIVATE_PET
+        update_values = pet_id,
+        self.db_response = self._db_connection.update_in_table(update_command, update_values)
+
+    def get_pets_with_search_criteria(self, search_criteria_map):
+
+        query = commands.PET_SEARCH_BASIS
+
+        for key in search_criteria_map.keys():
+            query += " AND"+" "+key+" = %s"
+
+        query_values = tuple(search_criteria_map.values())
+        self.db_response = self._db_connection.get_from_table(query, query_values)
 
