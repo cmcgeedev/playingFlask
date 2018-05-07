@@ -51,13 +51,17 @@ class PetServices(BaseService):
         update_values = pet_id,
         self.db_response = self._db_connection.update_in_table(update_command, update_values)
 
-    def get_pets_with_search_criteria(self, search_criteria_map):
+    def get_pets_with_search_criteria(self, search_criteria):
 
         query = commands.PET_SEARCH_BASIS
+        #convert search model to dict
+        field_map = vars(search_criteria)
 
-        for key in search_criteria_map.keys():
-            query += " AND"+" "+key+" = %s"
+        for key, value in field_map.iteritems():
+            #check that vlaue has been set
+            if value:
+                query += " AND"+" "+key+" = %s"
 
-        query_values = tuple(search_criteria_map.values())
+        query_values = tuple(field_map.values())
         self.db_response = self._db_connection.get_from_table(query, query_values)
 

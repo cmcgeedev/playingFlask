@@ -2,7 +2,7 @@ from petBase import petBase as Base
 from playingFlask.src.api.common.Utilities import validate_required_fields
 
 
-class pet:
+class Pet:
     __required_fields = ['age', 'weight', 'shelter_id', 'height', 'is_active', 'breed', 'species', 'id']
 
     def __init__(self, payload):

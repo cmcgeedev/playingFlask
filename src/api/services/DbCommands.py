@@ -13,8 +13,8 @@ UPDATE_PET = "UPDATE Pets SET (Age, Height, Weight, Breed, Species, Shelter_id) 
 ACTIVATE_PET = "UPDATE Pets SET (Is_Active) = (True) WHERE Id = %s"
 DEACTIVATE_PET = "UPDATE Pets SET (Is_Active) = (False) WHERE Id = %s"
 
-GET_SHELTER_WITH_ID = "SELECT Id, City, Capacity FROM Shelters WHERE Id = %s"
-GET_SHELTERS_BY_CITY = "SELECT Id, City, Capacity FROM Shelters WHERE City = %s"
+SHELTER_SEARCH_BASIS = "SELECT Id, City, Capacity, Address FROM Shelters WHERE Is_Active = TRUE AND "
 UPDATE_SHELTER = "UPDATE Shelters (City, Capacity) = (%s, %s)"
 ACTIVATE_SHELTER = "UPDATE Shelters SET (Is_Active) = (True) WHERE Id = %s"
 DEACTIVATE_SHELTER = "UPDATE Shelters SET (Is_Active) = (False) WHERE Id = %s"
+GET_SHELTER_WITH_ID = "SELECT Id, City, Capacity, Address FROM Shelters WHERE Id = %s"

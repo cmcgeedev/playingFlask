@@ -8,32 +8,59 @@ class PetControllerSearch:
 
     def __init__(self, payload):
         try:
-            assert validate_required_fields(self.__required_fields, payload)
-        except AssertionError:
+            field_check = validate_required_fields(self.__required_fields, payload)
+            if not field_check:
+                raise AttributeError
+        except AttributeError:
             print 'field check failed'
             return
 
-        self.__age_min = payload['age_min']
-        self.__age_max = payload['age_max']
-        self.__weight_min = payload['weight_min']
-        self.__weight_max = payload['weight_max']
-        self.__user_longitude = payload['user_longitude']
-        self.__user_latitude = payload['user_latitude']
-        self.__max_distance = payload['max_distance']
-        self.__breed = payload['breed']
-        self.__species = payload['species']
+        self.age_min = payload['age_min']
+        self.age_max = payload['age_max']
+        self.weight_min = payload['weight_min']
+        self.weight_max = payload['weight_max']
+        self.user_longitude = payload['user_longitude']
+        self.user_latitude = payload['user_latitude']
+        self.max_distance = payload['max_distance']
+        self.breed = payload['breed']
+        self.species = payload['species']
 
 
 class ShelterControllerSearch:
 
-    __required_fields = ['longitude', 'latitude']
+    __required_fields = ['name', 'city']
 
     def __init__(self, payload):
         try:
-            assert validate_required_fields(self.__required_fields, payload)
-        except AssertionError:
+            field_check = validate_required_fields(self.__required_fields, payload)
+            if not field_check:
+                raise AttributeError
+        except AttributeError:
             print 'field check failed'
             return
+
+        self.name = payload['name']
+        self.city = payload['city']
+
+
+class UserLoginRequest:
+
+    __required_fields = ['username', 'password', 'id']
+
+    def __init__(self, payload):
+        try:
+            field_check = validate_required_fields(self.__required_fields, payload)
+            if not field_check:
+                raise AttributeError
+        except AttributeError:
+            print 'field check failed'
+            return
+
+        self.id = payload['id']
+        self.password = payload['password']
+        self.username = payload['username']
+
+
 
 
 
