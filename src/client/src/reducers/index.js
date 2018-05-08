@@ -2,18 +2,15 @@ import { combineReducers } from 'redux';
 import { petsReducer, petReducer } from './petReducers';
 import { sheltersReducer, shelterReducer } from './shelterReducers';
 import login from './login';
-import petsReducer from './petsReducer';
-import petSearch from './petSearch';
-import shelter from './shelter';
-import ui from './ui';
-import user from './user';
+import { LoginUiReducer } from './LoginUiReducers';
+import { userReducer } from './userReducers';
 
 
 export default combineReducers({
-  login,
-  pet,
-  petSearch,
-  shelter,
-  ui,
-  user
+  petsReducer,
+  petReducer,
+  LoginUiReducer,
+  sheltersReducer,
+  shelterReducer,
+  userReducer
 });
